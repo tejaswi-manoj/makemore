@@ -20,6 +20,7 @@ for w in words:
 
 sorted(b.items(), key = lambda kv: kv[1], reverse=True) # sorted applies the kv function to each element of the list we pass 
 
+
 import torch
 N = torch.zeros((27,27), dtype=torch.int32)
 chars = sorted(list(set(''.join(words))))
@@ -38,6 +39,7 @@ for w in words:
 import matplotlib.pyplot as plot 
 %matplotlib inline
 
+# Plot a 27x27 look-up table, showing how many times a combination of two letters occurs
 plt.figure(figsize=(16,16))
 plt.imshow(N, cmap='Blues')
 for i in range(27):
@@ -46,3 +48,20 @@ for i in range(27):
         plt.text(j, i, chstr, ha = "center", va = "bottom", color = "gray")
         plt.text(j, i, N[i,j].item(), ha = "center", va = "bottom", color = "gray")
 plt.axis('off')
+
+
+# Sample names from the model
+out = []
+ix = 0
+g = torch.Generator().manual_seed(2147483647)
+
+for i in range(10):
+    while True:
+        p = N[ix].float()
+        p = p/p.sum()
+        ix = torch.multinomial(p, num_samples=1, replacement=True, generator=g).item()
+        out.append(itos[ix])
+        if ix == 0:
+            break
+        print(''.join(out))
+
