@@ -50,15 +50,18 @@ for i in range(27):
 plt.axis('off')
 
 
-# Sample names from the model
-out = []
-ix = 0
-g = torch.Generator().manual_seed(2147483647)
+P = N.float()
+P = P/P.sum(1,keepdim=True) # check broadcasting semantics to understand why this works - this operation is broadcastable
+# learn broadcasting semantics well!!!!!
 
-for i in range(10):
+# Sample names from the model
+
+g = torch.Generator().manual_seed(2147483647)
+for i in range(50):
+    out = []
+    ix = 0
     while True:
-        p = N[ix].float()
-        p = p/p.sum()
+        p = P[ix]
         ix = torch.multinomial(p, num_samples=1, replacement=True, generator=g).item()
         out.append(itos[ix])
         if ix == 0:
