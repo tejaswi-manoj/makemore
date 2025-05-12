@@ -51,13 +51,13 @@ plt.axis('off')
 
 
 P = N.float()
-P = P/P.sum(1,keepdim=True) # check broadcasting semantics to understand why this works - this operation is broadcastable
+P /= P.sum(1,keepdim=True) # check broadcasting semantics to understand why this works - this operation is broadcastable
 # learn broadcasting semantics well!!!!!
 
 # Sample names from the model
 
 g = torch.Generator().manual_seed(2147483647)
-for i in range(50):
+for i in range(5):
     out = []
     ix = 0
     while True:
@@ -68,3 +68,4 @@ for i in range(50):
             break
         print(''.join(out))
 
+# Up until now: trained a bigram language model by counting how frequently any pairing occurs
